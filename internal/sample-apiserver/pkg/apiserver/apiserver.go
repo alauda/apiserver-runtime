@@ -21,7 +21,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
-	"k8s.io/apimachinery/pkg/version"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 )
 
@@ -34,10 +33,8 @@ var (
 )
 
 func init() {
-
 	// we need to add the options to empty v1
 	// TODO fix the server code to avoid this
-	metav1.AddToGroupVersion(Scheme, schema.GroupVersion{Version: "v1"})
 
 	// TODO: keep the generic API server from wanting this
 	unversioned := schema.GroupVersion{Group: "", Version: "v1"}
@@ -81,11 +78,6 @@ func (cfg *Config) Complete() CompletedConfig {
 	c := completedConfig{
 		cfg.GenericConfig.Complete(),
 		&cfg.ExtraConfig,
-	}
-
-	c.GenericConfig.Version = &version.Info{
-		Major: "1",
-		Minor: "0",
 	}
 
 	return CompletedConfig{&c}
