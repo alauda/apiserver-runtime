@@ -27,6 +27,7 @@ import (
 	genericregistry "k8s.io/apiserver/pkg/registry/generic"
 	"k8s.io/apiserver/pkg/registry/rest"
 	pkgserver "k8s.io/apiserver/pkg/server"
+	"k8s.io/klog/v2"
 
 	"sigs.k8s.io/apiserver-runtime/pkg/builder/resource"
 	"sigs.k8s.io/apiserver-runtime/pkg/builder/resource/resourcestrategy"
@@ -71,6 +72,7 @@ func BuildAPIGroupInfos(s *runtime.Scheme, g genericregistry.RESTOptionsGetter) 
 					return nil, err
 				}
 				apis[gvr.Version][gvr.Resource] = storage
+				klog.Infof("Adding %s to %s with %T", gvr.Resource, gvr.Version, storage)
 				// add the defaulting function for this version to the scheme
 				if _, ok := storage.(resourcestrategy.Defaulter); ok {
 					if obj, ok := storage.(runtime.Object); ok {

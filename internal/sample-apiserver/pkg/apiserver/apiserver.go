@@ -39,13 +39,7 @@ func init() {
 
 	// TODO: keep the generic API server from wanting this
 	unversioned := schema.GroupVersion{Group: "", Version: "v1"}
-	Scheme.AddUnversionedTypes(unversioned,
-		&metav1.Status{},
-		&metav1.APIVersions{},
-		&metav1.APIGroupList{},
-		&metav1.APIGroup{},
-		&metav1.APIResourceList{},
-	)
+	metav1.AddToGroupVersion(Scheme, unversioned)
 }
 
 // ExtraConfig holds custom apiserver config
